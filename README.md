@@ -8,12 +8,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Georgian:wght@500;600;700&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #F5F2EA;
-    --bg-2: #ECE6D6;
+    --bg: #FFFDF8;
+    --bg-2: #FFF9E7;
     --card: #FCFAF4;
-    --paper-line: #E3DAC3;
+    --paper-line: #F26D21;
     --ink: #2B271F;
-    --ink-soft: #6E6656;
+    --ink-soft: #F26D21;
     --accent: #F26D21;
     --accent-dark: #D25813;
     --ok: #3E6B4F;
