@@ -1,0 +1,778 @@
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>დისციპლინური ფორმა — zoommer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Georgian:wght@500;600;700&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F5F2EA;
+    --bg-2: #ECE6D6;
+    --card: #FCFAF4;
+    --paper-line: #E3DAC3;
+    --ink: #2B271F;
+    --ink-soft: #6E6656;
+    --accent: #F26D21;
+    --accent-dark: #D25813;
+    --ok: #3E6B4F;
+    --shadow: rgba(120, 100, 60, 0.16);
+    --radius: 3px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse at top, #FBF8F1 0%, var(--bg) 55%, var(--bg-2) 100%);
+    font-family: 'Noto Sans Georgian', sans-serif;
+    color: var(--ink);
+    padding: 56px 20px 80px;
+    display:flex;
+    justify-content:center;
+  }
+
+  .sheet-wrap{
+    width:100%;
+    max-width: 720px;
+  }
+
+  /* Letterhead */
+  .letterhead{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    margin-bottom: 18px;
+    padding: 0 6px;
+  }
+  .letterhead .brand{
+    font-family:'Noto Serif Georgian', serif;
+    font-weight:700;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    color: #A8875A;
+  }
+
+  /* Paper card */
+  .dossier{
+    background: var(--card);
+    border: 1px solid var(--paper-line);
+    border-radius: var(--radius);
+    box-shadow: 0 24px 50px -24px var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .dossier::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: repeating-linear-gradient(transparent, transparent 37px, var(--paper-line) 38px);
+    opacity: 0.3;
+    pointer-events:none;
+  }
+  .dossier::after{
+    content:"";
+    position:absolute; left: 64px; top:0; bottom:0; width:1px;
+    background: rgba(242, 109, 33, 0.14);
+    pointer-events:none;
+  }
+
+  .doc-header{
+    position:relative;
+    padding: 34px 40px 26px 40px;
+    border-bottom: 1.5px solid var(--paper-line);
+  }
+  .doc-header h1{
+    font-family: 'Noto Serif Georgian', serif;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 1.25;
+    margin: 0 0 8px 0;
+    color: var(--ink);
+  }
+  .doc-header p{
+    margin:0;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    max-width: 46ch;
+  }
+
+  form{
+    position:relative;
+    padding: 8px 40px 40px 40px;
+  }
+
+  .field{
+    display:flex;
+    gap: 18px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--paper-line);
+  }
+  .field:last-of-type{ border-bottom: none; }
+
+  .field .num{
+    flex: 0 0 26px;
+    font-family: 'Noto Serif Georgian', serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--accent-dark);
+    padding-top: 4px;
+  }
+
+  .field .body{ flex: 1; min-width: 0; }
+
+  .field label{
+    display:block;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .field .hint{
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="date"],
+  select,
+  textarea{
+    width: 100%;
+    background: #FFFFFF;
+    border: 1px solid var(--paper-line);
+    border-radius: var(--radius);
+    padding: 11px 12px;
+    font-family: 'Noto Sans Georgian', sans-serif;
+    font-size: 14.5px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  textarea{ min-height: 110px; resize: vertical; line-height:1.55; }
+
+  select{
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1L7 7L13 1' stroke='%236E6656' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 34px;
+    cursor: pointer;
+  }
+
+  input:focus, select:focus, textarea:focus{
+    border-color: var(--accent);
+    background: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(242,109,33,0.16);
+  }
+
+  .sub-field{
+    margin-top: 12px;
+    display: none;
+  }
+  .sub-field.show{ display: block; }
+
+  .field .err-text{
+    font-size: 11.5px;
+    color: #B4432B;
+    margin-top: 6px;
+    display: none;
+  }
+  .field .err-text.show{ display: block; }
+
+  /* File inputs */
+  .file-drop{
+    position: relative;
+    border: 1.5px dashed var(--paper-line);
+    border-radius: var(--radius);
+    background: var(--bg);
+    padding: 16px 14px;
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    cursor:pointer;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .file-drop:hover{ border-color: var(--accent); background: #FFFFFF; }
+  .file-drop.has-file{ border-style: solid; border-color: var(--ok); background: #FFFFFF; }
+  .file-drop input[type="file"]{
+    position:absolute; inset:0; opacity:0; cursor:pointer;
+  }
+  .file-drop .ficon{
+    flex: 0 0 34px; height:34px; border-radius: 50%;
+    background: var(--bg-2);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 15px; color: var(--accent-dark);
+  }
+  .file-drop .ftext{ font-size: 13px; color: var(--ink-soft); }
+  .file-drop .ftext strong{ display:block; font-size: 13.5px; color: var(--ink); font-weight:600; }
+
+  /* Submit zone */
+  .submit-zone{
+    margin-top: 30px;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .btn-submit{
+    appearance:none;
+    border:none;
+    background: linear-gradient(180deg, var(--accent) 0%, var(--accent-dark) 100%);
+    color:#FFFFFF;
+    font-family:'Noto Sans Georgian', sans-serif;
+    font-weight: 700;
+    font-size: 14.5px;
+    letter-spacing:0.02em;
+    padding: 13px 28px;
+    border-radius: var(--radius);
+    cursor:pointer;
+    box-shadow: 0 8px 18px -8px rgba(210,88,19,0.5);
+    transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+  }
+  .btn-submit:hover{ transform: translateY(-1px); box-shadow: 0 12px 22px -8px rgba(210,88,19,0.55); }
+  .btn-submit:active{ transform: translateY(0); }
+  .btn-submit:disabled{ opacity:0.55; cursor:not-allowed; transform:none; }
+
+  .status{
+    font-size: 13px;
+    color: var(--ink-soft);
+    min-height: 18px;
+  }
+  .status.err{ color: #B4432B; font-weight:600; }
+  .status.ok{ color: var(--ok); font-weight:600; }
+
+  /* Success modal */
+  .stamp{
+    position: fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: rgba(43,39,31,0.45);
+    opacity:0;
+    pointer-events:none;
+    transition: opacity .2s ease;
+    z-index: 50;
+    padding: 20px;
+  }
+  .stamp.show{ opacity:1; pointer-events:auto; }
+  .stamp-badge{
+    width: 100%;
+    max-width: 340px;
+    border-radius: 14px;
+    background: #FFFFFF;
+    box-shadow: 0 30px 60px -20px rgba(43,39,31,0.35);
+    padding: 36px 30px 28px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    transform: translateY(14px) scale(0.96);
+    opacity:0;
+    transition: transform .3s cubic-bezier(.2,1,.3,1), opacity .25s ease;
+  }
+  .stamp.show .stamp-badge{ transform: translateY(0) scale(1); opacity:1; }
+  .check-circle{
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom: 18px;
+  }
+  .check-circle svg{
+    width: 28px; height: 28px;
+  }
+  .check-circle path{
+    stroke: #FFFFFF;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+  }
+  .stamp.show .check-circle path{
+    animation: draw-check .35s ease .15s forwards;
+  }
+  @keyframes draw-check{
+    to{ stroke-dashoffset: 0; }
+  }
+  .stamp-badge .st1{
+    font-family: 'Noto Serif Georgian', serif;
+    font-weight:700;
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .stamp-badge .st2{
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .stamp-close{
+    margin-top: 24px;
+    width: 100%;
+    background: var(--accent);
+    color: #FFFFFF;
+    border: none;
+    border-radius: var(--radius);
+    padding: 11px 20px;
+    font-family:'Noto Sans Georgian', sans-serif;
+    font-size: 13.5px;
+    font-weight:700;
+    cursor:pointer;
+    transition: opacity .12s ease;
+  }
+  .stamp-close:hover{ opacity: 0.9; }
+  .stamp-inner{ display:flex; flex-direction:column; align-items:center; width:100%; }
+
+  @media (max-width: 560px){
+    .doc-header{ padding: 26px 22px 20px; }
+    form{ padding: 8px 22px 30px; }
+    .field{ gap: 12px; }
+    .doc-header h1{ font-size: 23px; }
+  }
+
+  /* Light rules link */
+  .rules-link{
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent-dark);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-color: rgba(210,88,19,0.35);
+  }
+  .rules-link:hover{ text-decoration-color: var(--accent-dark); }
+</style>
+</head>
+<body>
+
+<div class="sheet-wrap">
+  <div class="letterhead">
+    <div class="brand">zoommer</div>
+  </div>
+
+  <div class="dossier">
+    <div class="doc-header">
+      <h1>მოთხოვნა დისციპლინური ზომის დაკისრების შესახებ</h1>
+      <p>ივსება პასუხისმგებელი პირის მიერ. გთხოვთ, მიუთითოთ ზუსტი ინფორმაცია და დაურთოთ საჭირო დოკუმენტები.</p>
+      <a href="#" id="rulesLink" class="rules-link" target="_blank" rel="noopener">წესები და მოთხოვნის ფორმები→</a>
+    </div>
+
+    <form id="discForm" novalidate autocomplete="off">
+
+      <div class="field">
+        <div class="num">01</div>
+        <div class="body">
+          <label for="formFillDate">გაგზავნის თარიღი</label>
+          <input type="date" id="formFillDate" name="formFillDate" autocomplete="off" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="num">02</div>
+        <div class="body">
+          <label for="applicationDate">განცხადების შევსების თარიღი <span style="font-weight:400;">(დისციპლინურის/ახსნა განმარტების მიხედვით)</span></label>
+          <input type="date" id="applicationDate" name="applicationDate" autocomplete="off" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="num">03</div>
+        <div class="body">
+          <label for="managerEmail">პასუხისმგებელი პირის მეილი</label>
+          <input type="email" id="managerEmail" name="managerEmail" required autocomplete="email" inputmode="email" data-lpignore="true" data-1p-ignore placeholder="name@zoommer.ge">
+          <div class="err-text" id="managerEmailErr">დასაშვებია მხოლოდ @zoommer.ge დომენის მეილი (მაგ.: giorgi.beridze@zoommer.ge)</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="num">04</div>
+        <div class="body">
+          <label for="managerName">პასუხისმგებელი პირის სახელი გვარი</label>
+          <input type="text" id="managerName" name="managerName" required autocomplete="off" data-lpignore="true" data-1p-ignore>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="num">05</div>
+        <div class="body">
+          <label for="managerRole">პასუხისმგებელი პირის თანამდებობა</label>
+          <input type="text" id="managerRole" name="managerRole" required autocomplete="organization-title" data-lpignore="true" data-1p-ignore>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="num">06</div>
+        <div class="body">
+          <label for="employeeName">თანამშრომლის სახელი გვარი</label>
+          <input type="text" id="employeeName" name="employeeName" required autocomplete="off" data-lpignore="true" data-1p-ignore>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="num">07</div>
+        <div class="body">
+          <label for="serviceType">გაყიდვების დეპარტამენტი</label>
+          <select id="serviceType" name="serviceType" autocomplete="off" required>
+            <option value="" disabled selected>აირჩიეთ</option>
+            <option value="ადმინისტრაცია">ადმინისტრაცია</option>
+            <option value="ფილიალი">ფილიალი</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="num">08</div>
+        <div class="body">
+          <label for="branchOrDepartment">ფილიალი / დეპარტამენტი</label>
+          <select id="branchOrDepartment" name="branchOrDepartment" autocomplete="off" required>
+            <option value="" disabled selected>აირჩიეთ</option>
+            <option value="1 ზუმერი">1 ზუმერი</option>
+            <option value="ცენტრალი">ცენტრალი</option>
+            <option value="პეკინი">პეკინი</option>
+            <option value="სითი მოლი საბურთალო">სითი მოლი საბურთალო</option>
+            <option value="სითი მოლი გლდანი">სითი მოლი გლდანი</option>
+            <option value="გლდანი">გლდანი</option>
+            <option value="თბილისი მოლი">თბილისი მოლი</option>
+            <option value="ისთ ფოინთი">ისთ ფოინთი</option>
+            <option value="გორი მოლი">გორი მოლი</option>
+            <option value="რუსთავი მოლი">რუსთავი მოლი</option>
+            <option value="თელავი მოლი">თელავი მოლი</option>
+            <option value="ახალციხე">ახალციხე</option>
+            <option value="ქუთაისი">ქუთაისი</option>
+            <option value="ქუთაისი ვესტ მოლი">ქუთაისი ვესტ მოლი</option>
+            <option value="ბათუმი მოლი">ბათუმი მოლი</option>
+            <option value="ბათუმი გრანდ მოლი">ბათუმი გრანდ მოლი</option>
+            <option value="ბათუმი ჭავჭავაძე">ბათუმი ჭავჭავაძე</option>
+            <option value="ზუგდიდი მოლი">ზუგდიდი მოლი</option>
+            <option value="ონლაინ გაყიდვების დეპარტამენტი">ონლაინ გაყიდვების დეპარტამენტი</option>
+            <option value="კორპორატიული გაყიდვების დეპარტამენტი">კორპორატიული გაყიდვების დეპარტამენტი</option>
+            <option value="საცალო გაყიდვების დეპარტამენტი">საცალო გაყიდვების დეპარტამენტი</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="num">09</div>
+        <div class="body">
+          <label for="employeePosition">თანამდებობა</label>
+          <input type="text" id="employeePosition" name="employeePosition" required autocomplete="organization-title" data-lpignore="true" data-1p-ignore>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="num">10</div>
+        <div class="body">
+          <label for="violationType">დარღვევის ტიპი</label>
+          <select id="violationType" name="violationType" autocomplete="off" required>
+            <option value="" disabled selected>აირჩიეთ</option>
+            <option value="IMEI-ს / ნივთის არევა (არასწორად გაყიდვა)">IMEI-ს / ნივთის არევა (არასწორად გაყიდვა)</option>
+            <option value="სამსახურში დაგვიანება/გაცდენა">სამსახურში დაგვიანება/გაცდენა</option>
+            <option value="არასრული/არასწორი ინფორმაციის მიწოდება მომხმარებლისთვის">არასრული/არასწორი ინფორმაციის მიწოდება მომხმარებლისთვის</option>
+            <option value="სალარო პროცესების დარღვევა">სალარო პროცესების დარღვევა</option>
+            <option value="სამუშაო პროცესების დარღვევა">სამუშაო პროცესების დარღვევა</option>
+            <option value="კვარტლური ტესტის გადაწერა/ განმეორებით ჩაჭრა">კვარტლური ტესტის გადაწერა/ განმეორებით ჩაჭრა</option>
+            <option value="ნივთის დაზიანება">ნივთის დაზიანება</option>
+            <option value="სხვა">სხვა</option>
+          </select>
+          <div class="sub-field" id="violationTypeOtherWrap">
+            <input type="text" id="violationTypeOther" name="violationTypeOther" autocomplete="off" placeholder="მიუთითეთ დარღვევის ტიპი">
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="num">11</div>
+        <div class="body">
+          <label for="requestFile">დისციპლინური ზომის მოთხოვნის ასატვირთი ფორმა</label>
+          <div class="file-drop" id="requestDrop">
+            <div class="ficon">⇪</div>
+            <div class="ftext" id="requestText"><strong>აირჩიეთ ფაილი</strong>PDF, DOCX ან სურათი — მაქს. 8MB</div>
+            <input type="file" id="requestFile" name="requestFile" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="num">12</div>
+        <div class="body">
+          <label for="explanationFile">თანამშრომლის ახსნა-განმარტების ასატვირთი ფორმა</label>
+          <div class="file-drop" id="explanationDrop">
+            <div class="ficon">⇪</div>
+            <div class="ftext" id="explanationText"><strong>აირჩიეთ ფაილი</strong>PDF, DOCX ან სურათი — მაქს. 8MB</div>
+            <input type="file" id="explanationFile" name="explanationFile" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="submit-zone">
+        <button type="submit" class="btn-submit" id="submitBtn">გაგზავნა</button>
+        <div class="status" id="statusMsg"></div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="stamp" id="stampOverlay">
+  <div class="stamp-inner">
+    <div class="stamp-badge">
+      <div class="check-circle">
+        <svg viewBox="0 0 24 24"><path d="M4 12.5L9.5 18L20 6.5"/></svg>
+      </div>
+      <div class="st1">Sent</div>
+      <div class="st2">დოკუმენტი წარმატებით გაიგზავნა.</div>
+      <button class="stamp-close" id="stampClose">Exit</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ==========================================================
+  // შეცვალეთ ეს URL თქვენი გამოქვეყნებული Apps Script Web App-ის
+  // მისამართით (იხ. ინსტრუქცია Code.gs ფაილში)
+  // ==========================================================
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzUWwkuXXFAO-heefvsYUf6D99G0NWlAA2pjv6j8of1YSXGrNEs1BXsGZRw7H-_czXn/exec";
+
+  // ==========================================================
+  // შეცვალეთ ეს ბმული, თუ დისციპლინური პასუხისმგებლობის წესების
+  // დოკუმენტის მისამართი შეიცვლება (Google Drive/Docs ბმული)
+  // ==========================================================
+  const RULES_LINK_URL = "https://drive.google.com/drive/folders/14_aLuD_ZBg_6FUhtyCAcvt62WnH4x18g?usp=drive_link";
+  document.getElementById('rulesLink').href = RULES_LINK_URL;
+
+  const MAX_FILE_BYTES = 8 * 1024 * 1024; // 8MB
+
+  // ფორმის შევსების თარიღი ავტომატურად მიენიჭება დღევანდელს (რედაქტირებადია)
+  (function setDefaultDate(){
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('formFillDate').value = today;
+  })();
+
+  function setupFileDrop(dropId, inputId, textId){
+    const drop = document.getElementById(dropId);
+    const input = document.getElementById(inputId);
+    const text = document.getElementById(textId);
+    input.addEventListener('change', () => {
+      if(input.files && input.files[0]){
+        const f = input.files[0];
+        drop.classList.add('has-file');
+        text.innerHTML = `<strong>${f.name}</strong>${(f.size/1024/1024).toFixed(2)} MB`;
+      } else {
+        drop.classList.remove('has-file');
+      }
+    });
+  }
+  setupFileDrop('requestDrop','requestFile','requestText');
+  setupFileDrop('explanationDrop','explanationFile','explanationText');
+
+  // "სხვა" არჩევისას დარღვევის ტიპისთვის ჩნდება ჩასაწერი ველი
+  const violationTypeSelect = document.getElementById('violationType');
+  const violationTypeOtherWrap = document.getElementById('violationTypeOtherWrap');
+  const violationTypeOtherInput = document.getElementById('violationTypeOther');
+  violationTypeSelect.addEventListener('change', () => {
+    if(violationTypeSelect.value === 'სხვა'){
+      violationTypeOtherWrap.classList.add('show');
+      violationTypeOtherInput.required = true;
+    } else {
+      violationTypeOtherWrap.classList.remove('show');
+      violationTypeOtherInput.required = false;
+      violationTypeOtherInput.value = '';
+    }
+  });
+
+  // მკაცრი ვალიდაცია: მხოლოდ @zoommer.ge დომენის მეილი, სახელით ადრე @-ს
+  const ZOOMMER_EMAIL_RE = /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]*[a-zA-Z0-9])?@zoommer\.ge$/;
+  function isValidManagerEmail(value){
+    return ZOOMMER_EMAIL_RE.test(value.trim());
+  }
+  const managerEmailInput = document.getElementById('managerEmail');
+  const managerEmailErr = document.getElementById('managerEmailErr');
+  managerEmailInput.addEventListener('input', () => {
+    managerEmailInput.value = managerEmailInput.value.replace(/\s+/g, '');
+  });
+  managerEmailInput.addEventListener('blur', () => {
+    const val = managerEmailInput.value.trim();
+    if(val && !isValidManagerEmail(val)){
+      managerEmailErr.classList.add('show');
+      managerEmailInput.setCustomValidity('დასაშვებია მხოლოდ @zoommer.ge დომენის მეილი');
+    } else {
+      managerEmailErr.classList.remove('show');
+      managerEmailInput.setCustomValidity('');
+    }
+  });
+
+  function fileToBase64(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  const form = document.getElementById('discForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusMsg = document.getElementById('statusMsg');
+  const stampOverlay = document.getElementById('stampOverlay');
+  document.getElementById('stampClose').addEventListener('click', () => {
+    stampOverlay.classList.remove('show');
+  });
+
+  // ==========================================================
+  // მთლიანი ვალიდაცია ხდება მხოლოდ ამ JS ფუნქციით — ბრაუზერის
+  // საკუთარი (native) ვალიდაცია გამორთულია ფორმაზე დასმული
+  // novalidate ატრიბუტით. ეს გადაწყვეტს პრობლემას, როცა ზოგიერთი
+  // ბრაუზერის ავტომატური შევსების ფუნქცია (Chrome-ის Enhanced
+  // Autofill) ტექსტურ ველებს (სახელი, თანამდებობა და სხვ.) შეცდომით
+  // აღიქვამდა პირადობის/დოკუმენტის ნომრის ველად და ბლოკავდა
+  // გაგზავნას თავისი (ჩვენთვის უცნობი) ვალიდაციის შეტყობინებით.
+  // ==========================================================
+  function validateFormFields(){
+    const requestFileInput = document.getElementById('requestFile');
+    const explanationFileInput = document.getElementById('explanationFile');
+
+    const checks = [
+      { el: document.getElementById('formFillDate'), ok: () => !!document.getElementById('formFillDate').value, msg: 'გთხოვთ, მიუთითოთ გაგზავნის თარიღი.' },
+      { el: document.getElementById('applicationDate'), ok: () => !!document.getElementById('applicationDate').value, msg: 'გთხოვთ, მიუთითოთ განცხადების შევსების თარიღი.' },
+      { el: managerEmailInput, ok: () => isValidManagerEmail(managerEmailInput.value.trim()), msg: 'პასუხისმგებელი პირის მეილი უნდა იყოს @zoommer.ge დომენის.', extra: () => managerEmailErr.classList.add('show') },
+      { el: document.getElementById('managerName'), ok: () => !!document.getElementById('managerName').value.trim(), msg: 'გთხოვთ, მიუთითოთ პასუხისმგებელი პირის სახელი და გვარი.' },
+      { el: document.getElementById('managerRole'), ok: () => !!document.getElementById('managerRole').value.trim(), msg: 'გთხოვთ, მიუთითოთ პასუხისმგებელი პირის თანამდებობა.' },
+      { el: document.getElementById('employeeName'), ok: () => !!document.getElementById('employeeName').value.trim(), msg: 'გთხოვთ, მიუთითოთ თანამშრომლის სახელი და გვარი.' },
+      { el: document.getElementById('serviceType'), ok: () => !!document.getElementById('serviceType').value, msg: 'გთხოვთ, აირჩიოთ გაყიდვების დეპარტამენტი.' },
+      { el: document.getElementById('branchOrDepartment'), ok: () => !!document.getElementById('branchOrDepartment').value, msg: 'გთხოვთ, აირჩიოთ ფილიალი/დეპარტამენტი.' },
+      { el: document.getElementById('employeePosition'), ok: () => !!document.getElementById('employeePosition').value.trim(), msg: 'გთხოვთ, მიუთითოთ თანამშრომლის თანამდებობა.' },
+      { el: violationTypeSelect, ok: () => !!violationTypeSelect.value, msg: 'გთხოვთ, აირჩიოთ დარღვევის ტიპი.' },
+      { el: violationTypeOtherInput, ok: () => violationTypeSelect.value !== 'სხვა' || !!violationTypeOtherInput.value.trim(), msg: 'გთხოვთ, მიუთითოთ დარღვევის ტიპი.' },
+      { el: requestFileInput, ok: () => !!requestFileInput.files[0], msg: 'გთხოვთ, ატვირთოთ დისციპლინური ზომის მოთხოვნის ფორმა.' },
+      { el: requestFileInput, ok: () => !requestFileInput.files[0] || requestFileInput.files[0].size <= MAX_FILE_BYTES, msg: 'მოთხოვნის ფაილი აღემატება 8MB-ს.' },
+      { el: explanationFileInput, ok: () => !!explanationFileInput.files[0], msg: 'გთხოვთ, ატვირთოთ თანამშრომლის ახსნა-განმარტების ფორმა.' },
+      { el: explanationFileInput, ok: () => !explanationFileInput.files[0] || explanationFileInput.files[0].size <= MAX_FILE_BYTES, msg: 'ახსნა-განმარტების ფაილი აღემატება 8MB-ს.' }
+    ];
+
+    for(const check of checks){
+      if(!check.ok()){
+        if(check.extra) check.extra();
+        return { valid: false, message: check.msg, focusEl: check.el };
+      }
+    }
+    return { valid: true };
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    statusMsg.textContent = '';
+    statusMsg.className = 'status';
+    managerEmailErr.classList.remove('show');
+
+    if(WEB_APP_URL.indexOf('PASTE_YOUR') === 0){
+      statusMsg.textContent = 'ჯერ არ არის მითითებული Apps Script-ის Web App URL — იხილეთ ინსტრუქცია.';
+      statusMsg.className = 'status err';
+      return;
+    }
+
+    const validation = validateFormFields();
+    if(!validation.valid){
+      statusMsg.textContent = validation.message;
+      statusMsg.className = 'status err';
+      if(validation.focusEl && typeof validation.focusEl.focus === 'function'){
+        validation.focusEl.focus();
+      }
+      return;
+    }
+
+    const managerEmailVal = managerEmailInput.value.trim();
+    const requestFileInput = document.getElementById('requestFile');
+    const explanationFileInput = document.getElementById('explanationFile');
+    const reqFile = requestFileInput.files[0];
+    const expFile = explanationFileInput.files[0];
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'იგზავნება...';
+    statusMsg.textContent = 'მონაცემები იგზავნება, გთხოვთ დაელოდოთ...';
+    statusMsg.className = 'status';
+
+    try{
+      const [reqBase64, expBase64] = await Promise.all([
+        fileToBase64(reqFile),
+        fileToBase64(expFile)
+      ]);
+
+      const violationTypeFinal = violationTypeSelect.value === 'სხვა'
+        ? violationTypeOtherInput.value.trim()
+        : violationTypeSelect.value;
+
+      const payload = {
+        formFillDate: document.getElementById('formFillDate').value,
+        applicationDate: document.getElementById('applicationDate').value,
+        managerEmail: managerEmailVal,
+        managerName: document.getElementById('managerName').value.trim(),
+        managerRole: document.getElementById('managerRole').value.trim(),
+        employeeName: document.getElementById('employeeName').value.trim(),
+        serviceType: document.getElementById('serviceType').value,
+        branchOrDepartment: document.getElementById('branchOrDepartment').value.trim(),
+        employeePosition: document.getElementById('employeePosition').value.trim(),
+        violationType: violationTypeFinal,
+        requestFile: {
+          name: reqFile.name,
+          mimeType: reqFile.type || 'application/octet-stream',
+          data: reqBase64
+        },
+        explanationFile: {
+          name: expFile.name,
+          mimeType: expFile.type || 'application/octet-stream',
+          data: expBase64
+        }
+      };
+
+      const resp = await fetch(WEB_APP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await resp.json();
+
+      if(result.status === 'ok'){
+        statusMsg.textContent = '';
+        stampOverlay.classList.add('show');
+        form.reset();
+        document.getElementById('requestDrop').classList.remove('has-file');
+        document.getElementById('explanationDrop').classList.remove('has-file');
+        document.getElementById('requestText').innerHTML = '<strong>აირჩიეთ ფაილი</strong>PDF, DOCX ან სურათი — მაქს. 8MB';
+        document.getElementById('explanationText').innerHTML = '<strong>აირჩიეთ ფაილი</strong>PDF, DOCX ან სურათი — მაქს. 8MB';
+        violationTypeOtherWrap.classList.remove('show');
+        violationTypeOtherInput.required = false;
+        managerEmailErr.classList.remove('show');
+        setDefaultDate();
+      } else {
+        statusMsg.textContent = 'შეცდომა: ' + (result.message || 'გაგზავნა ვერ მოხერხდა.');
+        statusMsg.className = 'status err';
+      }
+    } catch(err){
+      statusMsg.textContent = 'კავშირის შეცდომა — სცადეთ თავიდან.';
+      statusMsg.className = 'status err';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'გაგზავნა';
+    }
+  });
+
+  function setDefaultDate(){
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('formFillDate').value = today;
+  }
+</script>
+
+</body>
+</html>
